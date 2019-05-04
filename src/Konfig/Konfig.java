@@ -1,11 +1,12 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+package Konfig;
+
+import java.sql.*;
 
 public class Konfig {
     public static Connection con;
     public static Statement stm;
-    public static void main(String args[]){
+    public ResultSet rs;
+    public void Konek (){
         try {
             String url ="jdbc:mysql://localhost/SAMIKA";
             String user="root";

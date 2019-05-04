@@ -1,6 +1,9 @@
 
 import java.awt.Frame;
 import javax.swing.JFrame;
+import java.sql.*;
+import Konfig.Konfig;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,10 +22,44 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        www = new Konfig();
+        www.Konek();
+        
     }
+    //  KONFIG SQL
+    Konfig www;
+    
+    private void masuk (){
+        try {
+            String nik = boxNIK.getText();
+            String pass = new String (boxPass.getPassword());
+            www.stm = www.con.createStatement();
+            String sql = "Select * From Dosen Where NIK = '"+nik+"' And PASSWORD = '"+pass+"'";
+            www.rs = www.stm.executeQuery(sql);
+        if (www.rs.next()){
+            if(boxPass.getText().equals(www.rs.getString("password"))){
+              new Menu().show();
+              this.dispose();
+            }
+            else {
+                JOptionPane.showMessageDialog(rootPane,"Password Salah, silahkan coba lagi");
+                boxPass.setText("");
+                boxPass.requestFocus();
+                
+            }
+        }  else{
+                JOptionPane.showMessageDialog(rootPane, "Login Gagal !");
+                
+                }
+        
+    }
+        catch (SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Login Gagal !");
+                
+                }
+    }    
     
     
-    // Kamus Login
     
     
     
@@ -48,14 +85,15 @@ public class Login extends javax.swing.JFrame {
         jLabelClose = new javax.swing.JLabel();
         jLabelMinimize = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        boxNIK = new javax.swing.JTextField();
+        boxPass = new javax.swing.JPasswordField();
 
         jButton2.setText("jButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setUndecorated(true);
+        setType(java.awt.Window.Type.UTILITY);
 
         jPanel3.setBackground(new java.awt.Color(38, 194, 129));
 
@@ -128,9 +166,9 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        boxNIK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                boxNIKActionPerformed(evt);
             }
         });
 
@@ -147,12 +185,12 @@ public class Login extends javax.swing.JFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel2)
                                 .addGap(45, 45, 45)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(boxNIK, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(211, 211, 211)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(boxPass, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(115, 115, 115))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -175,14 +213,14 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(boxNIK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(4, 4, 4)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(boxPass, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(86, 86, 86))
@@ -213,9 +251,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Menu objek = new Menu();
-        objek.setVisible(true);
-        this.dispose();
+        masuk();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
@@ -229,9 +265,9 @@ public class Login extends javax.swing.JFrame {
         this.setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_jLabelMinimizeMouseClicked
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void boxNIKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxNIKActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_boxNIKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,6 +305,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField boxNIK;
+    private javax.swing.JPasswordField boxPass;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -280,7 +318,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelMinimize;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
