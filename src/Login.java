@@ -38,6 +38,7 @@ public class Login extends javax.swing.JFrame {
             www.rs = www.stm.executeQuery(sql);
         if (www.rs.next()){
             if(boxPass.getText().equals(www.rs.getString("password"))){
+              www.simpanNIK(nik);
               new Menu().show();
               this.dispose();
             }
@@ -252,6 +253,7 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         masuk();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabelCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCloseMouseClicked
